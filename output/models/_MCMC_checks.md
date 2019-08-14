@@ -1,0 +1,30 @@
+|model                                 |param_type                  | rhat_median| rhat_worst| rhat_not_ok_prop| neff_ratio_median| neff_ratio_worst| neff_not_ok_prop|
+|:-------------------------------------|:---------------------------|-----------:|----------:|----------------:|-----------------:|----------------:|----------------:|
+|m1_back_inconsistency                 |group-level parameters      |           1|          1|                0|              0.95|             0.65|                0|
+|m1_back_inconsistency                 |population-level parameters |           1|          1|                0|              0.83|             0.66|                0|
+|m1_breast_inconsistency               |group-level parameters      |           1|          1|                0|              0.94|             0.62|                0|
+|m1_breast_inconsistency               |population-level parameters |           1|          1|                0|              0.66|             0.59|                0|
+|m2_back_inconsistency_by_P_poly2      |group-level parameters      |           1|          1|                0|              0.97|             0.80|                0|
+|m2_back_inconsistency_by_P_poly2      |population-level parameters |           1|          1|                0|              0.93|             0.75|                0|
+|m2_breast_inconsistency_by_P_poly2    |group-level parameters      |           1|          1|                0|              0.95|             0.65|                0|
+|m2_breast_inconsistency_by_P_poly2    |population-level parameters |           1|          1|                0|              0.88|             0.57|                0|
+|m3_back_confidence                    |group-level parameters      |           1|          1|                0|              0.96|             0.49|                0|
+|m3_back_confidence                    |population-level parameters |           1|          1|                0|              0.78|             0.49|                0|
+|m3_breast_confidence                  |group-level parameters      |           1|          1|                0|              0.49|             0.38|                0|
+|m3_breast_confidence                  |population-level parameters |           1|          1|                0|              0.50|             0.21|                0|
+|m4_back_confidence_by_P_poly2         |group-level parameters      |           1|          1|                0|              0.96|             0.49|                0|
+|m4_back_confidence_by_P_poly2         |population-level parameters |           1|          1|                0|              0.93|             0.50|                0|
+|m4_breast_confidence_by_P_poly2       |group-level parameters      |           1|          1|                0|              0.62|             0.45|                0|
+|m4_breast_confidence_by_P_poly2       |population-level parameters |           1|          1|                0|              0.75|             0.29|                0|
+|m5_back_inconsistency_by_confidence   |group-level parameters      |           1|          1|                0|              0.97|             0.73|                0|
+|m5_back_inconsistency_by_confidence   |population-level parameters |           1|          1|                0|              0.84|             0.81|                0|
+|m5_breast_inconsistency_by_confidence |group-level parameters      |           1|          1|                0|              0.94|             0.62|                0|
+|m5_breast_inconsistency_by_confidence |population-level parameters |           1|          1|                0|              0.89|             0.71|                0|
+|m6_back_MCS                           |group-level parameters      |           1|          1|                0|              0.98|             0.83|                0|
+|m6_back_MCS                           |population-level parameters |           1|          1|                0|              0.93|             0.86|                0|
+|m6_breast_MCS                         |group-level parameters      |           1|          1|                0|              0.98|             0.84|                0|
+|m6_breast_MCS                         |population-level parameters |           1|          1|                0|              0.95|             0.90|                0|
+|m7_back_MCS_type                      |group-level parameters      |           1|          1|                0|              0.96|             0.81|                0|
+|m7_back_MCS_type                      |population-level parameters |           1|          1|                0|              0.91|             0.89|                0|
+|m7_breast_MCS_type                    |group-level parameters      |           1|          1|                0|              0.97|             0.79|                0|
+|m7_breast_MCS_type                    |population-level parameters |           1|          1|                0|              0.89|             0.81|                0|

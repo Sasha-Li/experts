@@ -1,0 +1,110 @@
+<% MyRow <- function(d1, d2, v, var) { %>
+    <%= var %> & <%= d1[v,"p"] %> & <%= d1[v,"l"] %> & <%= d1[v,"u"] %> & &
+                <%= d2[v,"p"] %> & <%= d2[v,"l"] %> & <%= d2[v,"u"] %>
+  <% } %>
+<% EmptyRow <- function() paste(rep(" & ", 8 - 1), collapse = "") %>
+
+
+\begin{tabular}{lSSScSSS}
+
+  \toprule
+  {} & \multicolumn{3}{c}{\textbf{Mammography}} & {} & \multicolumn{3}{c}{\textbf{Lumbosacral spine}} \\ 
+  %\cline{2-4} \cline{6-8}
+  {Parameter} & {Estimate}  & \multicolumn{2}{c}{95\% CI} & {} & {Estimate}  & \multicolumn{2}{c}{95\% CI}\\
+  \toprule
+	
+	\multicolumn{8}{l}{\textbf{M1: Inconsistency (intercept-only model)}} \\
+  <% 
+    d1 <- fnc_posterior_summary("m1_breast_inconsistency")
+    d2 <- fnc_posterior_summary("m1_back_inconsistency")
+    %>
+  <% MyRow(d1, d2, "b", "Intercept") %> \\
+  <% MyRow(d1, d2, "sd_d", "sd(expert)") %> \\
+  <% MyRow(d1, d2, "sd_p", "sd(case)") %> \\
+  
+  %<%= EmptyRow() %> \\
+  
+  \midrule
+  \multicolumn{8}{l}{\textbf{M2: Inconsistency vs. case ambiguity (Prediction 1): $I \sim (\widehat{P} - 0.5) + (\widehat{P} - 0.5)^2$}} \\
+  <% 
+    d1 <- fnc_posterior_summary("m2_breast_inconsistency_by_P_poly2")
+    d2 <- fnc_posterior_summary("m2_back_inconsistency_by_P_poly2")
+    %>
+  <% MyRow(d1, d2, "b_I", "Intercept") %> \\
+  <% MyRow(d1, d2, "b_polypc1M0.521", "$(\\widehat{P} - 0.5)$") %> \\
+  <% MyRow(d1, d2, "b_polypc1M0.522", "$(\\widehat{P} - 0.5)^2$") %> \\
+  <% MyRow(d1, d2, "sd_d", "sd(expert)") %> \\
+  <% MyRow(d1, d2, "sd_p", "sd(case)") %> \\
+  
+  %<%= EmptyRow() %> \\
+
+  \midrule
+  \multicolumn{8}{l}{\textbf{M3: Confidence (intercept-only model)}} \\
+  <% 
+    d1 <- fnc_posterior_summary("m3_breast_confidence")
+    d2 <- fnc_posterior_summary("m3_back_confidence")
+    %>
+  <% MyRow(d1, d2, "b_I", "Intercept") %> \\
+  <% MyRow(d1, d2, "sd_d", "sd(expert)") %> \\
+  <% MyRow(d1, d2, "sd_p", "sd(case)") %> \\
+
+  %<%= EmptyRow() %> \\
+  
+  \midrule
+  \multicolumn{8}{l}{\textbf{M4: Confidence vs. case ambiguity (Prediction 2): $C \sim (\widehat{P} - 0.5) + (\widehat{P} - 0.5)^2$}} \\
+  <% 
+    d1 <- fnc_posterior_summary("m4_breast_confidence_by_P_poly2")
+    d2 <- fnc_posterior_summary("m4_back_confidence_by_P_poly2")
+    %>
+  <% MyRow(d1, d2, "b_I", "Intercept") %> \\
+  <% MyRow(d1, d2, "b_polypc1M0.521", "$(\\widehat{P} - 0.5)$") %> \\
+  <% MyRow(d1, d2, "b_polypc1M0.522", "$(\\widehat{P} - 0.5)^2$") %> \\
+  <% MyRow(d1, d2, "sd_d", "sd(expert)") %> \\
+  <% MyRow(d1, d2, "sd_p", "sd(case)") %> \\
+                
+    %<%= EmptyRow() %> \\
+  
+  \midrule
+  \multicolumn{8}{l}{\textbf{M5: Inconsistency vs. confidence (Prediction 3): $I \sim (C - 1)$}} \\
+  <% 
+    d1 <- fnc_posterior_summary("m5_breast_inconsistency_by_confidence")
+    d2 <- fnc_posterior_summary("m5_back_inconsistency_by_confidence")
+    %>
+  <% MyRow(d1, d2, "b_Intercept", "Intercept") %> \\
+  <% MyRow(d1, d2, "b_Iconf1M1", "(C - 1)") %> \\
+  <% MyRow(d1, d2, "sd_d", "sd(expert)") %> \\
+  <% MyRow(d1, d2, "sd_p", "sd(case)") %> \\
+  
+  
+  \midrule
+
+	\multicolumn{8}{l}{\textbf{M6: Confidence rule vs. first/second diagnoses}} \\
+  <% 
+    d1 <- fnc_posterior_summary("m6_breast_MCS")
+    d2 <- fnc_posterior_summary("m6_back_MCS")
+    %>
+  <% MyRow(d1, d2, "b_Intercept", "Intercept") %> \\
+  <% MyRow(d1, d2, "b_decisionfirst", "Diagnosis 1") %> \\
+  <% MyRow(d1, d2, "b_decisionsecond", "Diagnosis 2") %> \\
+  <% MyRow(d1, d2, "sd_d", "sd(expert)") %> \\
+  <% MyRow(d1, d2, "sd_p", "sd(case)") %> \\
+  
+  %<%= EmptyRow() %> \\
+  
+  \midrule
+	\multicolumn{8}{l}{\textbf{M7: Confidence rule and kind vs. wicked cases (Prediction 4)}} \\
+  <% 
+    d1 <- fnc_posterior_summary("m7_breast_MCS_type")
+    d2 <- fnc_posterior_summary("m7_back_MCS_type")
+    %>
+  <% MyRow(d1, d2, "b_Intercept", "Intercept") %> \\
+  <% MyRow(d1, d2, "b_typewicked", "Wicked") %> \\
+  <% MyRow(d1, d2, "b_decisionfirst", "Diagnosis 1") %> \\
+  <% MyRow(d1, d2, "b_decisionfirst:typewicked", "Diagnosis 1 $\\times$ Wicked") %> \\
+  <% MyRow(d1, d2, "b_decisionsecond", "Diagnosis 2") %> \\
+  <% MyRow(d1, d2, "b_decisionsecond:typewicked", "Diagnosis 2 $\\times$ Wicked") %> \\
+  <% MyRow(d1, d2, "sd_d", "sd(expert)") %> \\
+  <% MyRow(d1, d2, "sd_p", "sd(case)") %> \\
+  
+  \bottomrule
+\end{tabular}

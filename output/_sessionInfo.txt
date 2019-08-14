@@ -1,0 +1,73 @@
+R version 3.6.1 (2019-07-05)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS Mojave 10.14.6
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] viridis_0.5.1     viridisLite_0.3.0 forcats_0.4.0    
+ [4] stringr_1.4.0     dplyr_0.8.3       purrr_0.3.2      
+ [7] readr_1.3.1       tidyr_0.8.3       tibble_2.1.3     
+[10] ggplot2_3.2.0     tidyverse_1.2.1   tidybayes_1.1.0  
+[13] rebus_0.1-3       readxl_1.3.1      R.rsp_0.43.1     
+[16] magrittr_1.5      knitr_1.24        here_0.1         
+[19] glue_1.3.1        cowplot_1.0.0     brms_2.9.0       
+[22] Rcpp_1.0.2        assertr_2.6      
+
+loaded via a namespace (and not attached):
+ [1] colorspace_1.4-1          ggridges_0.5.1           
+ [3] rsconnect_0.8.15          rprojroot_1.3-2          
+ [5] ggstance_0.3.2            markdown_1.0             
+ [7] base64enc_0.1-3           rstudioapi_0.10          
+ [9] rstan_2.19.2              svUnit_0.7-12            
+[11] DT_0.8                    lubridate_1.7.4          
+[13] xml2_1.2.1                bridgesampling_0.7-2     
+[15] R.methodsS3_1.7.1         shinythemes_1.1.2        
+[17] zeallot_0.1.0             bayesplot_1.7.0          
+[19] jsonlite_1.6              broom_0.5.2              
+[21] R.oo_1.22.0               shiny_1.3.2              
+[23] compiler_3.6.1            httr_1.4.1               
+[25] backports_1.1.4           assertthat_0.2.1         
+[27] Matrix_1.2-17             lazyeval_0.2.2           
+[29] cli_1.1.0                 later_0.8.0              
+[31] htmltools_0.3.6           prettyunits_1.0.2        
+[33] tools_3.6.1               igraph_1.2.4.1           
+[35] coda_0.19-3               gtable_0.3.0             
+[37] rebus.base_0.0-3          reshape2_1.4.3           
+[39] cellranger_1.1.0          vctrs_0.2.0              
+[41] nlme_3.1-141              crosstalk_1.0.0          
+[43] xfun_0.8                  ps_1.3.0                 
+[45] rebus.datetimes_0.0-1     rvest_0.3.4              
+[47] mime_0.7                  miniUI_0.1.1.1           
+[49] rebus.numbers_0.0-1       gtools_3.8.1             
+[51] zoo_1.8-6                 scales_1.0.0             
+[53] colourpicker_1.0          hms_0.5.0                
+[55] promises_1.0.1            Brobdingnag_1.2-6        
+[57] parallel_3.6.1            inline_0.3.15            
+[59] shinystan_2.5.0           gridExtra_2.3            
+[61] loo_2.1.0                 StanHeaders_2.18.1-10    
+[63] stringi_1.4.3             dygraphs_1.1.1.6         
+[65] pkgbuild_1.0.4            rlang_0.4.0              
+[67] pkgconfig_2.0.2           matrixStats_0.54.0       
+[69] lattice_0.20-38           rstantools_1.5.1         
+[71] htmlwidgets_1.3           processx_3.4.1           
+[73] tidyselect_0.2.5          plyr_1.8.4               
+[75] R6_2.4.0                  generics_0.0.2           
+[77] withr_2.1.2               pillar_1.4.2             
+[79] haven_2.1.1               xts_0.11-2               
+[81] abind_1.4-5               rebus.unicode_0.0-2      
+[83] modelr_0.1.4              crayon_1.3.4             
+[85] arrayhelpers_1.0-20160527 grid_3.6.1               
+[87] callr_3.3.1               threejs_0.3.1            
+[89] digest_0.6.20             xtable_1.8-4             
+[91] R.cache_0.13.0            httpuv_1.5.1             
+[93] R.utils_2.9.0             stats4_3.6.1             
+[95] munsell_0.5.0             shinyjs_1.0              
