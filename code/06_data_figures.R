@@ -77,7 +77,7 @@ fnc_get_M7_posterior <- function(m) {
   
   # add a sample id
   posterior <- as.data.frame(posterior) %>%
-    as.tbl() %>%
+    as_tibble() %>%
     mutate(i = row_number())
   
   # calculate the posterior distributions for the four comparisons
@@ -108,7 +108,7 @@ my_smooth <- function(color, span = 2, ...)
 
 
 
-### Main figure ####
+### Figure `fig_empirical`: Main empirical results ####
 
 fig_empirical_I_P <- case_infos %>%
   filter(study == "breast") %>%
@@ -363,7 +363,7 @@ fig_empirical <- plot_grid(
   fig_breast_I_C,
   fig_back_I_C,
   ncol = 2,
-  labels = c("A", "B", "C", "D", "E", "F"),
+  labels = c("a", "b", "c", "d", "e", "f"),
   scale = .9
 )
 
@@ -376,11 +376,16 @@ save_plot(
   base_height = 10
 )
 
+save_plot(
+  here("output/figures/fig_empirical.jpg"),
+  fig_empirical,
+  base_aspect_ratio = 2 / 3,
+  base_height = 10
+)
 
 
 
-
-#### Figure accuracy 1st vs. 2nd diagnosis ####
+### Figure `fig_empirical_pc`: Accuracy 1st vs. 2nd diagnoses ####
 
 fig_empirical_pc <- case_infos %>%
   filter(study == "breast") %>%
@@ -403,14 +408,14 @@ fig_empirical_pc <- case_infos %>%
 
 fig_breast_pc <- fig_empirical_pc +
   ggtitle(title_breast) +
-  my_smooth(color = color_breast) +
+  geom_density_2d(alpha = .25, color = color_breast) +
   geom_point(color = color_breast, alpha = .25)
 
 
 fig_back_pc <- fig_empirical_pc %+%
   filter(case_infos, study == "back") +
   ggtitle(title_back) +
-  my_smooth(color = color_back) +
+  geom_density_2d(alpha = .25, color = color_back) +
   geom_point(
     aes(pc1j, pc2j),
     color = color_back,
@@ -423,7 +428,7 @@ fig_empirical_pc <- plot_grid(
   fig_breast_pc,
   fig_back_pc,
   ncol = 2,
-  labels = c("A", "B"),
+  labels = c("a", "b"),
   scale = .95
 )
 
@@ -435,11 +440,16 @@ save_plot(
   base_height = 10 / 3
 )
 
+save_plot(
+  here("output/figures/fig_empirical_pc.jpg"),
+  fig_empirical_pc,
+  base_aspect_ratio = 2,
+  base_height = 10 / 3
+)
 
 
 
-
-### Figure MCS ####
+### Figure `fig_mcs_m7`: MCS vs. 1st and 2nd diagnoses ####
 set.seed(12345)
 case_infos_mcs <- case_infos %>%
   # filter out ambiguous cases and
@@ -489,7 +499,9 @@ fig_mcs <- case_infos_mcs %>%
   geom_point(aes(typej, color = study, size = i_n),
              alpha = 0.375) +
   geom_boxplot(
-    width = .1,
+    aes(weight = i_n),
+    width = .2,
+    varwidth = TRUE,
     outlier.shape = NA,
     alpha = 0.5,
     position = position_nudge(x = .225, y = 0)
@@ -500,14 +512,11 @@ fig_mcs <- case_infos_mcs %>%
 fig_mcs
 
 
-
-### Variant of MCS figure with uncertainty from M7 ####
-
 # load Model 7
 m7_breast_MCS_type <-
-  readRDS(here("/output/models/m7_breast_MCS_type.rds"))
+  readRDS(here("output/models/m7_breast_MCS_type.rds"))
 m7_back_MCS_type <-
-  readRDS(here("/output/models/m7_back_MCS_type.rds"))
+  readRDS(here("output/models/m7_back_MCS_type.rds"))
 
 # get posterior predictions
 m7_breast_MCS_type_posterior <-
@@ -553,5 +562,224 @@ save_plot(
   base_height = 4.5
 )
 
+save_plot(
+  here("output/figures/fig_mcs_m7.jpg"),
+  fig_mcs_m7,
+  base_width = 6,
+  base_height = 4.5
+)
+
 dat_M7 %>%
   knitr::kable(digits = 2)
+
+
+
+
+### Figure `fig_conf_experts`: Confidence diagnoses 1 vs. diagnoses 2 ####
+
+
+# prepare data
+dat_mcs_rnd <- trials %>%
+  select(study, doctor, picture, corr1, corr2, mcs) %>%
+  mutate(corr_rnd_expect = (corr1 + corr2) / 2)
+
+dat_mcs_rnd_experts_n_inconsistent <- dat_mcs_rnd %>% 
+  group_by(study, doctor) %>%
+  summarize(n_inconsistent = sum(corr1 != corr2), n_cases = n()) %>% 
+  mutate(prop_inconsistent = n_inconsistent/n_cases)
+
+# create expert data frame
+dat_mcs_rnd_experts <- dat_mcs_rnd %>%
+  filter(corr1 != corr2) %>%
+  group_by(study, doctor) %>%
+  summarize(
+    pc_mcs = mean(mcs),
+    pc_rnd_expect = mean(corr_rnd_expect),
+  ) %>%
+  mutate(impr_mcs_rnd = pc_mcs - pc_rnd_expect) %>% 
+  left_join(dat_mcs_rnd_experts_n_inconsistent)
+
+
+
+# how often do experts change their diagnoses?
+dat_mcs_rnd_experts %>%
+  group_by(study) %>%
+  skim(pc_mcs:prop_inconsistent)
+
+
+# how does confidence change from first to second diagnoses?
+dat_conf_experts <- trials %>%
+  select(study, doctor, conf1, conf2) %>%
+  group_by(study, doctor) %>%
+  summarize(
+    n = n(),
+    conf1_mean = mean(conf1),
+    conf1_se = sd(conf1) / sqrt(n - 1),
+    conf2_mean = mean(conf2),
+    conf2_se = sd(conf2) / sqrt(n - 1)
+  ) %>%
+  mutate(conf1_minus_conf = conf1_mean - conf2_mean)
+
+dat_conf_experts %>% 
+  group_by(study) %>%
+  skim(conf1_mean, conf2_mean, conf1_minus_conf) %>% 
+  arrange(study)
+
+fig_conf_experts_base <- dat_conf_experts %>%
+  filter(study == "breast") %>%
+  ggplot(aes(conf1_mean, conf2_mean)) +
+  scale_x_continuous("Mean 1st confidence") +
+  scale_y_continuous("Mean 2nd confidence") +
+  coord_fixed(ratio = 1,
+              xlim = c(1, 5),
+              ylim = c(1, 5)) +
+  geom_abline(
+    intercept = 0,
+    slope = 1,
+    linetype = "dotted",
+    size = line_size / 2
+  )
+fig_conf_experts_breast <- fig_conf_experts_base +
+  geom_density_2d(alpha = .25, color = color_breast) +
+  geom_point(alpha = .5, color = color_breast) +
+  ggtitle(title_breast)
+fig_conf_experts_breast
+
+fig_conf_experts_back <- fig_conf_experts_breast %+%
+  filter(dat_conf_experts, study == "back") +
+  coord_fixed(ratio = 1,
+              xlim = c(1, 2),
+              ylim = c(1, 2)) +
+  geom_density_2d(alpha = .25, color = color_back) +
+  geom_linerange(aes(ymin = conf2_mean - 2 * conf2_se,
+                     ymax = conf2_mean + 2 * conf2_se),
+                 color = color_back, alpha = .5) +
+  geom_linerange(aes(xmin = conf1_mean - 2 * conf1_se,
+                     xmax = conf1_mean + 2 * conf1_se),
+                 color = color_back, alpha = .5) +
+  geom_point(alpha = 1, color = color_back) +
+  ggtitle(title_back)
+fig_conf_experts_back
+
+fig_conf_experts <- plot_grid(
+  fig_conf_experts_breast,
+  fig_conf_experts_back,
+  ncol = 2,
+  labels = c("a", "b"),
+  align = "hv",
+  scale = .95
+)
+fig_conf_experts
+
+
+save_plot(
+  here("output/figures/fig_conf_experts.pdf"),
+  fig_conf_experts,
+  base_aspect_ratio = 2,
+  base_height = 10 / 3
+)
+
+save_plot(
+  here("output/figures/fig_conf_experts.jpg"),
+  fig_conf_experts,
+  base_aspect_ratio = 2,
+  base_height = 10 / 3
+)
+
+
+
+
+### Figure `fig_mcs_rnd_experts`: MCS improvement over random choice ####
+
+
+# Bayesian t-test
+breast_ttest <- ttestBF(
+  x = filter(dat_mcs_rnd_experts, study == "breast")$impr_mcs_rnd,
+  rscale = "ultrawide",
+  posterior = TRUE,
+  iterations = 10 ^ 4
+)
+#breast_ttest
+head(breast_ttest)
+breast_ttest_quantiles <-
+  quantile(breast_ttest[, "mu"], c(.025, .5, .975))
+breast_ttest_quantiles
+
+quantile(breast_ttest[, "delta"], c(.025, .5, .975))
+
+
+back_ttest <- ttestBF(
+  x = filter(dat_mcs_rnd_experts, study == "back")$impr_mcs_rnd,
+  rscale = "ultrawide",
+  posterior = TRUE,
+  iterations = 10 ^ 4
+)
+#back_ttest
+head(back_ttest)
+back_ttest_quantiles <-
+  quantile(back_ttest[, "mu"], c(.025, .5, .975))
+back_ttest_quantiles
+
+quantile(back_ttest[, "delta"], c(.025, .5, .975))
+
+
+# consolidating the t-test statistics
+dat_stats_ttest <- list(breast_ttest_quantiles,
+                        back_ttest_quantiles) %>%
+  bind_rows %>%
+  mutate(study_title = factor(c("Mammograms", "Lumbosacral spine")))
+
+
+
+# create figure
+fig_mcs_rnd_experts <- dat_mcs_rnd_experts %>%
+  left_join(study_infos) %>%
+  ggplot(aes(study_title, impr_mcs_rnd, fill = study_title)) +
+  xlab("") +
+  scale_y_continuous("Improvement confidence rule\n(vs. random choosing)",
+                     breaks = pretty_breaks(10)) +
+  coord_fixed(ratio = 2) +
+  scale_color_manual(values = c(color_breast, color_back)) +
+  scale_fill_manual(values = c(color_breast, color_back)) +
+  scale_size("Observations",
+             range = c(1, 4)) +
+  guides(fill = "none", color = "none") +
+  geom_hline(yintercept = 0, linetype = "dotted") +
+  geom_point(
+    aes(color = study_title, size = n_inconsistent),
+    position = position_jitter(
+      width = 0.03,
+      height = 0,
+      seed = 12345
+    ),
+    alpha = .25
+  ) +
+  geom_boxplot(
+    aes(weight = n_inconsistent),
+    width = .1,
+    varwidth = TRUE,
+    outlier.shape = NA,
+    alpha = 0.5,
+    position = position_nudge(x = .175, y = 0)
+  ) +
+  geom_pointrange(
+    aes(y = `50%`, ymin = `2.5%`, ymax = `97.5%`),
+    position = position_nudge(x = -.175, y = 0),
+    data = dat_stats_ttest
+  )
+fig_mcs_rnd_experts
+
+
+save_plot(
+  here("output/figures/fig_mcs_rnd_experts.pdf"),
+  fig_mcs_rnd_experts,
+  base_width = 5.25,
+  base_height = 3.5
+)
+
+save_plot(
+  here("output/figures/fig_mcs_rnd_experts.jpg"),
+  fig_mcs_rnd_experts,
+  base_width = 5.25,
+  base_height = 3.5
+)

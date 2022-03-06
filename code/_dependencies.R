@@ -1,14 +1,22 @@
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+
 # load packages
-library(assertr)
-library(brms)
-library(cowplot)
-library(glue)
-library(here)
-library(knitr)
-library(magrittr)
-library(R.rsp)
-library(readxl)
-library(rebus)
-library(tidybayes)
-library(tidyverse)
-library(viridis)
+p_load(
+  tidyverse,
+  assertr,
+  brms,
+  cowplot,
+  glue,
+  here,
+  knitr,
+  magrittr,
+  R.rsp,
+  readxl,
+  rebus,
+  tidybayes,
+  viridis,
+  scales,
+  skimr,
+  BayesFactor,
+  devtools
+)

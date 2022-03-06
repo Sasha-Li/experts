@@ -11,7 +11,7 @@
 ### Save session information to disk ####
 #
 source(here::here("code/_dependencies.R"))
-write_lines(capture.output(sessionInfo()),
+write_lines(session_info(),
             here("output/_sessionInfo.txt"))
 # `_dependencies.R` loads all R packages needed for the whole
 # analysis pipeline

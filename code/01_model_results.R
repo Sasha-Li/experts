@@ -219,12 +219,19 @@ fig_SCM <- plot_grid(
   fig_C_P,
   fig_I_C,
   nrow = 1,
-  labels = c("A", "B", "C"),
+  labels = c("a", "b", "c"),
   scale = .95
 )
 
 save_plot(
   here("output/figures/fig_SCM.pdf"),
+  fig_SCM,
+  base_aspect_ratio = 3,
+  base_height = 3
+)
+
+save_plot(
+  here("output/figures/fig_SCM.jpg"),
   fig_SCM,
   base_aspect_ratio = 3,
   base_height = 3

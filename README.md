@@ -1,6 +1,6 @@
-# When experts make inconsistent decisions
+# How experts' own inconsistency relates to their confidence and between-expert disagreement
 
-This repository contains the code and part of the data to reproduce all analyses reported in the manuscript "When experts make inconsistent decisions".
+This repository contains the code and part of the data to reproduce all analyses reported in the manuscript "How experts' own inconsistency relates to their confidence and between-expert disagreement".
 
 ## `/`
 
